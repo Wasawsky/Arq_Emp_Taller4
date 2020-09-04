@@ -11,8 +11,8 @@ package co.edu.escuelaing.sparkd.SparkD.micro;
  * @author mjbc_
  */
 public class MicroBoot {
-    @RequestMapping("/")
-    public String index() {
+    @RequestMapping("/aca")
+    static public String index() {
             return "Greetings from Spring Boot!";
     }
 }

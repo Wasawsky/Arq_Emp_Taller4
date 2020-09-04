@@ -17,9 +17,12 @@ public class MicroSpBoot {
     
     
     public static void main(String[] args){
-        args[0]="co.edu.escuelaing.sparkd.MicroBoot";
+        String[] arg = {"co.edu.escuelaing.sparkd.SparkD.micro.MicroBoot"};
+        //args = String[] a = {"co.edu.escuelaing.sparkd.SparkD.micro.MicroBoot"};
+        args = arg;
         try {
             MicroS iocServer = new MicroS();
+            System.out.println(args[0]);
             iocServer.start(args);
             HttpServer server = new HttpServer(iocServer);
             server.start();

@@ -5,6 +5,7 @@ import java.net.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ public class HttpServer {
     
     public HttpServer(MicroS iocServer) {
         this.iocServer=iocServer;
+        this.port = getPort();
     }
 
     public HttpServer(int port) {
@@ -85,12 +87,14 @@ public class HttpServer {
                 break;
             }
         }
+        if(request.get("requestLine") != null){
         Request req = new Request(request.get("requestLine"));
 
         System.out.println("RequestLine: " + req);
 
         createResponse(req, new PrintWriter(
                 clientSocket.getOutputStream(), true));
+        }
         in.close();
     }
 
@@ -128,7 +132,7 @@ public class HttpServer {
     }
 
     private void getStaticResource(String path, PrintWriter out) {
-        Path file = Path.of("target/classes/public_html" + path);
+        Path file = Paths.get("target/classes/public_html" + path);
         try (InputStream in = Files.newInputStream(file);
                 BufferedReader reader
                 = new BufferedReader(new InputStreamReader(in))) {
@@ -153,5 +157,12 @@ public class HttpServer {
                 + "\r\n";
         String methodresponse = iocServer.invoke(appuri);
         out.println(header + methodresponse);
+    }
+
+    private int getPort() {
+        if (System.getenv("PORT") != null) {
+           return Integer.parseInt(System.getenv("PORT"));
+        }
+        return 36000;
     }
 }
